@@ -29,7 +29,7 @@ void PlaceCards(Card[], Deck);
 void CoverMatching(Card[], Deck);
 
 int main() {
-  bool WorL{false};
+  bool Win{false};
   Deck deck;
   deck.GenerateDeck();
   deck.ResetList();
@@ -88,13 +88,20 @@ void PlaceCards(Card *cardsOnTable, Deck deck) {
 }
 
 void CoverMatching(Card *cardsOnTable, Deck deck) {
-  for(unsigned int x{0}; x < 8; x++) {
-    Card currentCard = cardsOnTable[i];
+  //for(unsigned int x{0}; x < 8; x++) {
+    Card currentCard = deck.GetNextItem();
+    cout << "Card on top of deck: " << currentCard.ToString() << endl;
+    int matches{0};
+
     for(unsigned int y{0}; y < 8; y++){
       Card currentComparison = cardsOnTable[y];
       if(currentCard.GetRank() == currentComparison.GetRank()){
-
+        cardsOnTable[y] = currentCard;
+        cout << "Found a match!" << endl;
+      }
+      if(matches == 0) {
+        cout << "No matches were found!"
       }
     }
-  }
+  //}
 }
