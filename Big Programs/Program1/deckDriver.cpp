@@ -82,8 +82,8 @@ int main() {
     }
     if(Lost == true){
       Lost = false;
-      cout << "\n\n\n\n\n\n\n  ------------Attempts: " << attempts << "------------\n\n\n\n\n\n\n";
-      cout << "\n  ------------highest match spree: " << mostMatches << "------------\n";
+      cout << "\n\n\n\n\n\n\n  ------------Attempts: " << attempts << "------------\n";
+      cout << "\n  ------------highest match spree: " << mostMatches << "------------\n\n\n\n\n\n\n";
       cout << "\n\n  Retrying...\n\n";
     }
     //this_thread::sleep_for(std::chrono::nanoseconds(1));    // for debugging
