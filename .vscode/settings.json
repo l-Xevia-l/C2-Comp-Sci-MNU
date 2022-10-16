@@ -2,6 +2,8 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "*.tcc": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp"
     }
 }
