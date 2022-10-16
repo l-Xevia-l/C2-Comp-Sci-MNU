@@ -100,7 +100,7 @@ void CoverMatching(Card *cardsOnTable, Deck deck) {
         cout << "Found a match!" << endl;
       }
       if(matches == 0) {
-        cout << "No matches were found!"
+        cout << "No matches were found!";
       }
     }
   //}
