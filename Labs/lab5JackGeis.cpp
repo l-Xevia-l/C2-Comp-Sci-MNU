@@ -64,9 +64,6 @@ bool Stack::isEmpty()
 // Driver program to test above functions
 int main()
 {
-    string equation;
-    bool closingPar{false}; // if set to true, means that there were too many closing brackets in the string
-    class Stack parenthesis;
     class Stack s;
     s.push('a');
     s.push('b');
@@ -84,6 +81,9 @@ int main()
     cout<< "\n";
 
     /* ----------------------My Code---------------------- */
+    string equation;
+    class Stack parenthesis;
+    bool closingPar{false}; // if set to true, means that there were too many closing brackets in the string
 
     cout << "Input an equation with an equal or unequal amount of parenthesis using '(' or ')': ";
     cin >> equation;
