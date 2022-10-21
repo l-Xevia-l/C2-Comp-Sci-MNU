@@ -1,0 +1,12 @@
+remove(nodeToRemove) {
+    if (nodeToRemove->right->data > nodeToRemove->left->data) {
+        greater = nodeToRemove->right->data;
+        less = nodeToRemove->left->data;
+    }
+
+    else if (nodeToRemove->right->data > nodeToRemove->left->data) {
+        greater = nodeToRemove->left->data;
+        less = nodeToRemove->right->data;
+    }
+    
+}

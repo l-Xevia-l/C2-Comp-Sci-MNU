@@ -2,7 +2,7 @@
 |-----------------------------------------------------------------------------|
 Author: Jack Geis
 Date Created: 10/12/2022
-Date Last Modified: 10/12/2022
+Date Last Modified: 10/20/2022
 Assignment: 
 |-----------------------------------------------------------------------------|
 */
@@ -27,71 +27,156 @@ void PrintDeck(Deck);
 
 void PrintTable(const Card[]);
 
-void PlaceCards(Card[], Deck);
+void PlaceCards(Card[], Deck &deck, unsigned int &cardsDelt);
 
-void CoverMatching(Card &topOfDeck, Card[], Deck, bool &Win, bool &Lost, int &matches);
+void CoverMatching(Card[], Deck &deck, bool &Win, bool &Lost, unsigned int &cardsDelt);
+
+
+/*
+------------------------------------------------- MAIN -------------------------------------------------
+*/
+
 
 int main() {
-  srand(time(NULL));
+  bool play = true;
 
-  bool Win{false};
-  bool Lost{false};
+  while(play) {
+    // seed the rand function
+    srand(time(NULL));
 
-  int attempts{0};
+    bool moreOutput;
+    bool Win = false;
+    bool Lost = false;
 
-  Deck deck;
-  deck.GenerateDeck();
-  
-  // Card slots on table
-  Card Card1_1, Card1_2, Card1_3, Card1_4, 
-       Card2_1, Card2_2, Card2_3, Card2_4;
+    // declaration of trackers
+    unsigned int attempts{0};
 
-  // Array to simulate a table
-  Card cardsOnTable[8] = {Card1_1, Card1_2, Card1_3, Card1_4, 
-                          Card2_1, Card2_2, Card2_3, Card2_4};
+    Deck deck;
 
-  Card topOfDeck;
-  
-  int mostMatches{0};
+    deck.GenerateDeck();
+    
+    // Card slots on table
+    Card Card1_1, Card1_2, Card1_3, Card1_4, 
+         Card2_1, Card2_2, Card2_3, Card2_4;
 
-  while(Win == false){ 
-    int matches{0};
+    // Array to simulate a table
+    Card cardsOnTable[8] = {Card1_1, Card1_2, Card1_3, Card1_4, 
+                            Card2_1, Card2_2, Card2_3, Card2_4};
 
-    // Generate and shuffle the deck
-    for(unsigned int i{0}; i < (rand() % 100 + 50); i++) {
-      deck.Shuffle();
+    string input;
+    cout << "Would you like to see more output? y/n: ";
+    cin >> input;
+
+    if(input == "y" || input == "Y") {
+      moreOutput = true;
+    }
+    if(input == "n" || input == "N") {
+      moreOutput = false;
+    }
+    
+    cout << "Simulation begins in: \n";
+    for(unsigned int i{3}; i > 0; i--) {
+      cout << "\n-" << i << "-\n";
+      this_thread::sleep_for(chrono::seconds(1));
+    }
+    
+    // Has less output and runs much faster
+    while(Win == false && moreOutput == false){ 
+      unsigned int cardsDelt = 0;
+      // Shuffle the deck
+      for(unsigned int i{0}; i < (rand() % 250 + 100); i++) {
+        deck.Shuffle();
+      }
+
+      cout << "\n----- NEW ROUND -----\n";
+
+      cout << "\nDeck shuffled.\n" << endl;
+
+      // Show the beginning 8 cards
+      cout << "Starting cards:" << endl;
+      PlaceCards(cardsOnTable, deck, cardsDelt);
+      PrintTable(cardsOnTable);
+      cout << endl;
+
+      // Plays one round
+      while(Lost == false && Win == false) {
+        CoverMatching(cardsOnTable, deck, Win, Lost, cardsDelt);
+      }
+
+      // Makes sure that the game is played until it's won.
+      if(Lost == true){
+        cout << "\n\n\n\n\n\n\n\nRound Lost!\n";
+        Lost = false;
+        cout << "\n\n\n\n\n\n\n  ------------Attempts: " << (attempts + 1) << "------------\n";
+        cout << "\n\n  Retrying...\n\n";
+      }
+
+      //this_thread::sleep_for(std::chrono::nanoseconds(1));    // for debugging
+      attempts++;
     }
 
-    // Show the beginning 8 cards
-    cout << "Starting cards:" << endl;
-    PlaceCards(cardsOnTable, deck);
-    cout << endl;
-    // Makes sure that the cards in cardsOnTable are not compared to themselves
-    for(unsigned int i{0}; i < 8; i++) {
-      deck.GetNextItem();
+    // Has more output with better format
+    while(Win == false && moreOutput == true) {
+      unsigned int cardsDelt = 0;
+      // Shuffle the deck
+      for(unsigned int i{0}; i < (rand() % 250 + 100); i++) {
+        deck.Shuffle();
+      }
+
+      cout << "\n----- NEW ROUND -----\n";
+
+      cout << "current attempt: " << (attempts - 1) << endl;
+
+      cout << "\nDeck shuffled.\n" << endl;
+
+      // Show the beginning 8 cards
+      cout << "Starting cards:" << endl;
+      PlaceCards(cardsOnTable, deck, cardsDelt);
+      PrintTable(cardsOnTable);
+      cout << endl;
+
+      // Plays one round with more output and a delay so output is readable
+      while(Lost == false && Win == false) {
+        cout << "\n-----------------------\n";
+        CoverMatching(cardsOnTable, deck, Win, Lost, cardsDelt);
+        cout << "before PrintTable" << endl;
+        //PrintTable(cardsOnTable);
+        cout << "after PrintTable" << endl;
+        this_thread::sleep_for(chrono::milliseconds(250));
+      }
+
+      // Makes sure that the game is played until it's won.
+      if(Lost == true){
+        cout << "\nRound Lost!\n";
+        Lost = false;
+        cout << "\n\n\n\n\n\n\n  ------------Attempts: " << (attempts + 1) << "------------\n";
+        cout << "\n\n  Retrying...\n\n";
+      }
+      attempts++;
     }
 
-    // Plays one round
-    while(Lost == false && Win == false) {
-      cout << "-------------------------------------------------------";
-      topOfDeck = deck.GetNextItem();
-      CoverMatching(topOfDeck, cardsOnTable, deck, Win, Lost, matches);
+    if(Win) {
+      cout << "\n\n-----YOU WON!-----\n\n";
     }
-    if(matches > mostMatches) {
-      mostMatches = matches;
+
+    cout << "\n\n  Attempts: " << attempts << endl << endl;
+
+    cout << "Would you like to play again? y/n: ";
+    cin >> input;
+
+    if(input == "y" || input == "Y") {
+      play = true;
     }
-    if(Lost == true){
-      Lost = false;
-      cout << "\n\n\n\n\n\n\n  ------------Attempts: " << attempts << "------------\n";
-      cout << "\n  ------------highest match spree: " << mostMatches << "------------\n\n\n\n\n\n\n";
-      cout << "\n\n  Retrying...\n\n";
+    if(input == "n" || input == "N") {
+      play = false;
     }
-    //this_thread::sleep_for(std::chrono::nanoseconds(1));    // for debugging
-    attempts++;
   }
-  cout << "\n\n  Attempts: " << attempts << endl << endl;
   return 0;
 }
+
+/*
+------------------------------------------------- FUNCTION DEFINITIONS -------------------------------------------------
+*/
 
 void PrintDeck(Deck deck) {
   if (deck.GetLength() == 0)
@@ -110,10 +195,18 @@ void PrintDeck(Deck deck) {
 }
 
 void PrintTable(const Card cardsOnTable[8]) {
-  for(unsigned int i{0}; i < 8; i++) {
+  // iterates 8 times to traverse cardsOnTable
+  for(unsigned int i{0}; i <= 7; i++) {
+    // selects the card in the current index and copies it into a string variable
     Card card = cardsOnTable[i];
-    string strcard = card.ToString();
+    cout << "card defined" << i << endl;
 
+    string strcard = card.ToString();
+    cout << "card converted to string" << endl;
+
+    cout << "current index: " << i << endl;
+
+    // outputs the string-copy of the card in a format of 2 rows of 4
     if((i < 4) || (i > 4)) {
       cout << strcard << ", ";
     }
@@ -121,61 +214,78 @@ void PrintTable(const Card cardsOnTable[8]) {
       cout << "\n" << strcard << ", ";
     }
   }
+  cout << "PrintTable succesfully ended last line\n";
 }
 
-void PlaceCards(Card *cardsOnTable, Deck deck) {
+void PlaceCards(Card *cardsOnTable, Deck &deck, unsigned int &cardsDelt) {
+  // Populates cardsOnTable with the first eight cards in the deck
   for(unsigned int i{0}; i < 8; i++) {
     cardsOnTable[i] = deck.GetNextItem();
+    cardsDelt++;
   }
-  PrintTable(cardsOnTable);
 }
 
-void CoverMatching(Card &topOfDeck, Card *cardsOnTable, Deck deck, bool &Win, bool &Lost, int &matches) {
-  //for(unsigned int x{0}; x < 8; x++) {
+// finds two matching cards and places a card from dack into their spot in cardsOnTable
+void CoverMatching(Card *cardsOnTable, Deck &deck, bool &Win, bool &Lost, unsigned int &cardsDelt) {
+    bool foundMatch = false;
+
+    // numOfMatches is used to tell if there were any matches at all. If no matches are made the round has been lost
+    unsigned int numOfMatches{0};
+    unsigned int sizeOfDeck{52};
+
+    // counter variables for the nested while loop
+    unsigned int x{0};
     unsigned int y{0};
-    int newMatch = matches;
 
-    // Display the current cards before matching and stacking
-    cout << "\nTable: \n";
-    PrintTable(cardsOnTable);
+    Card currentCard;
+    Card comparison;
 
-    // shows the card that is being compared to all of the cards on top of the table
-    cout << "\nCard on top of deck: " << topOfDeck.ToString() << endl;
-    cout << endl;
-    if((matches + 8) == 50) { // Check if the deck is empty by seeing if 42 matches have been made (The deck is 50 cards large, 8 cards are needed to start)
-      cout << endl;
-      PrintTable(cardsOnTable);
-      cout << "\n\nYou Won!\n";
+    // If the amount of cards delt from the deck is equal to the size of the deck, the game has been won.
+    if(cardsDelt >= sizeOfDeck) {
       Win = true;
     }
-    else {
-      while((y <= 8 && Lost == false) && Win == false){
 
-        Card currentComparison = cardsOnTable[y];
+    // nested while loops to compare each card to every other card until a match is found
+    while((x < 8 && foundMatch == false) && Win == false) {
+      y = 0;
+      currentCard = cardsOnTable[x];
+      cout << "x is: " << x << endl;
 
-        if(topOfDeck.GetRank() == currentComparison.GetRank()){ //compare the card on the top of the deck to the current card
-          Card cardUnder = cardsOnTable[y];
-          cardsOnTable[y] = topOfDeck; // put the card on top of it's match
-          matches++; // increment the amount of matches made
+      while((y < 8 && foundMatch == false) && Win == false) {
+        // makes sure a card is not compared to itself
+        if(x != y) {
+          comparison = cardsOnTable[y];
 
-          cout << "Matches: " << matches << endl << endl; // display the amount of matches
-          cout << topOfDeck.ToString() << " stacked onto " << cardUnder.ToString() << endl;
-          cout << endl;
+          // comppares cards
+          if(currentCard.GetRank() == comparison.GetRank()){
+            numOfMatches++;
+            cout << "y is (inside comparison): " << y << endl;
+            cout << "and x is: " << x << endl;
+ 
+            // places the cards from the deck onto the matching cards
+            cardsOnTable[y] = deck.GetNextItem();
+            cardsDelt++;
+            cardsOnTable[x] = deck.GetNextItem();
+            cardsDelt++;
+            cout << "Cards delt" << cardsDelt << endl;
 
-          if((matches + 8) == 50) { // Check if the deck is empty by seeing if 42 matches have been made (The deck is 50 cards large, 8 cards are needed to start)
-            cout << endl;
-            PrintTable(cardsOnTable);
-            cout << "\n\nYou Won!\n";
-            Win = true;
+            foundMatch = true;
+            
+            // IF the whole deck has been used, the game has been won.
+            if(cardsDelt >= sizeOfDeck) {
+              Win = true;
+            }
+
           }
+          cout << "y is: " << y << endl;
         }
-        y++; //Increment counter
+        y++;
       }
-      if(matches == newMatch) { // Check if there aren't any matching cards
-          cout << "No matches were found! Round Lost.\n";
-          Lost = true;
-      }
-
+      x++;
     }
-  //}
+
+    // IF no matches were found on the table, the game is lost.
+    if(numOfMatches < 1) {
+      Lost = true;
+    }
 }
