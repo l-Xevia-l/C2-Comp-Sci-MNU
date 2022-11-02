@@ -1,0 +1,52 @@
+DeleteItem(itemToRemove) {
+    declare node of type ptr to nodeType
+    Delete(itemToRemove, node);    
+}
+
+Delete(itemToRemove, node) {
+    if(itemToRemove == node->data){
+        DeleteNode(node)
+    }
+    else if(itemToRemove > node->data) {
+        node = node->right;
+        Delete(itemToRemove, node);
+    }
+    else {
+        node = node->left;
+        Delete(itemToRemove, node);
+    }
+}
+
+DeleteNode(node) {
+    if(node->right == NULL && node->left == NULL) {
+        declare temp pointer to node = node
+        <node before node> = NULL
+        delete temp pointer to node;
+    }
+    if(node->right != NULL || node->left != NULL){
+        if(node->right != NULL && node-left == NULL){
+            declare temp pointer to node = node
+            <the node before node> = node->right;
+            delete temp pointer to node
+        }
+        if(node->left != NULL && node->right == NULL) {
+            temp pointer = node
+            <the node before node> = node->right;
+            delete temp pointer
+        }
+    }
+    else if(node->right != NULL && node->left != NULL){
+        predecessorValue = getPredecessor(node-left)
+        node->data = predecessorValue;
+    }
+}
+
+getPredecessor(node) {
+    if(node->right == NULL) {
+        return node->data;
+        Delete(node->data, node->left)
+    }
+    else{
+        getPredecessor(node->right);
+    }
+}
