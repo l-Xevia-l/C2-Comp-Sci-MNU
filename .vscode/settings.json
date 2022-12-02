@@ -1,9 +1,10 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.errorSquiggles": "Enabled",
     "files.associations": {
         "*.tcc": "cpp",
         "regex": "cpp",
         "iostream": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "string": "cpp"
     }
 }

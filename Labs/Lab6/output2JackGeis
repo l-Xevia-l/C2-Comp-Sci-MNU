@@ -1,0 +1,53 @@
+4
+Tree is empty.
+V is inserted
+I is inserted
+B is inserted
+E is inserted
+BEIV
+Tree is not empty.
+I is deleted
+Next item is: B
+Next item is: E
+Next item is: V
+IN_ORDER traversal is complete.
+BEV
+V is deleted
+E is deleted
+B is deleted
+Tree is empty.
+G is inserted
+T is inserted
+R is inserted
+X is inserted
+P is inserted
+N is inserted
+Tree is not full.
+Next item is: V
+Next item is: B
+Next item is: E
+Next item is: G
+Next item is: T
+Next item is: R
+GNPRTX
+Tree has been made empty.
+G is inserted
+Y is inserted
+I is inserted
+O is inserted
+H is inserted
+Y is deleted
+Next item is: H
+Next item is: O
+Next item is: I
+Next item is: G
+POST_ORDER traversal is complete.
+Y not in list.
+O found in list.
+I found in list.
+Y is inserted
+R is inserted
+D is inserted
+Number of nodes is 7
+Tree has been made empty.
+Tree is empty.
