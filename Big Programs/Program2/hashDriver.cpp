@@ -21,7 +21,15 @@ using namespace std;
 
 int main() {
 
-    Hash table(150000, 100);
+    Hash hash(100);
+
+    hash.add("Hello World");
+
+    hash.add("Foo");
+    
+    hash.add("BAR");
+
+    cout << "number of strings in the list: " << hash.size() << endl;
 
 
 
