@@ -12,23 +12,20 @@ using namespace std;
 
 Hash::Hash(int numForMod) {
     modNum = numForMod;
-    
 }
 
 void Hash::add(string s){
-    cout << 3 << endl;
     insert(s);
-    cout << 4 << endl;
     numOfStrings++;
 }
 
 void Hash::remove(string s){
-
+    // code goes here
 }
 
 bool Hash::contains(string s){
     bool found;
-
+    // code goes here
     return found;
 }
 
@@ -67,7 +64,14 @@ void Hash::insert(string s){
 
         // Temporary pointer
         //node_k *arrPos = table[index];
-        node_k *temp = table[index]->next;
+
+        cout << "key " << newKey << endl;
+
+        cout << "index " << index << endl;
+
+        node_k *temp = table[index];
+
+        //cout << temp->key << endl; 
 
         cout << 5 << endl;
         /* Traverses to the end of the linked list. If there is a matching key, that means the item already

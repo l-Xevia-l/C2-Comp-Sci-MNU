@@ -6,7 +6,7 @@ struct node_k {
     string data;
     int key = -1;
     node_k * next = NULL;  
-};
+}; 
 
 class Hash {
 public: 

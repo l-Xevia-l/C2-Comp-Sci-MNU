@@ -23,7 +23,7 @@ int main() {
 
     Hash hash(100);
 
-    hash.add("Hello World");
+    hash.add("Fantastic");
 
     hash.add("Foo");
     
