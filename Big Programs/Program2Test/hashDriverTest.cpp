@@ -23,15 +23,17 @@ int main() {
 
     Hash hash(100);
 
-    hash.add("Hello World");
+    hash.add("Bar");
 
-    hash.add("Foo");
+    hash.add("Bar");
+
+    cout << "should be 1: " << hash.contains("Bar") << endl;
+
+    cout << "should be 0: " << hash.contains("foobar") << endl;
     
-    hash.add("BAR");
+    hash.add("foobar");
 
-    cout << "number of strings in the list: " << hash.size() << endl;
-
-
-
+    cout << "should be 1: " << hash.contains("foobar") << endl;
+    
     return 0;
 }

@@ -25,12 +25,14 @@ public:
     // Function that returns the number of strings in the table.
     int size();
 
+    void test();
+
 private:
     // Hash function to compute the hash code of a string.
     void insert(string);
 
     int modNum{};
-    int numOfStrings{};
+    int numOfStrings{0};
 
     // the <150'000> is the size of the table.
     node_k * table[150'000];

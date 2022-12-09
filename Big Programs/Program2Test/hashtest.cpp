@@ -12,13 +12,12 @@ using namespace std;
 
 Hash::Hash(int numForMod) {
     modNum = numForMod;
-    
 }
 
 void Hash::add(string s){
-    cout << 3 << endl;
+    //cout << endl;
     insert(s);
-    cout << 4 << endl;
+    //cout << endl;
     numOfStrings++;
 }
 
@@ -27,85 +26,111 @@ void Hash::remove(string s){
 }
 
 bool Hash::contains(string s){
-    bool found;
-
-    return found;
-}
-
-int Hash::size(){
-    return numOfStrings;
-}
-
-
-
-/* ---------------------------     Helper Functions     --------------------------- */
-
-// Generates a newKey and inserts the string into the list
-void Hash::insert(string s){
-    // Sentinels
-    bool inserted{false};
-    bool notInserted{false};
-
-    // Variable for the new item's key.
-    unsigned int newKey;
-
-    string lower_s = s;
+    bool found{false};
+    unsigned int newKey{0};
+    string lower_s;
+    lower_s.assign(s);
+    int ASCIInum{0};
 
     // Converts the string in question into all lower case so that ASCII keys are accurate.
     transform(lower_s.begin(), lower_s.end(), lower_s.begin(), ::tolower);
 
     // converts srting s into ASCII integers so the hash function can do it's job.
     for (char letter : lower_s){ 
-        int ASCIInum = int(letter);
+        ASCIInum = int(letter);
+        newKey = newKey + ASCIInum;
+    }
+
+    // Hash function
+    int index = newKey % modNum;
+
+    // Temporary pointer
+    node_k *temp = table[index];
+
+    // Somethings' wrong around here. Using temp->next/key/data or table[index]->next/key/data causes a seg fault.
+    // Another problem is that temp is always NULL. This shouldn't be the case because table[index] is pointing at a node
+    // I've checked to make sure.
+
+    /* Traverses to the end of the linked list. If there is a matching key, that means the item 
+    exists. */
+    while (temp != NULL){
+        cout << "temp is not NULL" << endl;
+        if (temp->key == newKey){
+            cout << "temp->key == newKey" << endl;
+            temp = NULL;
+            delete temp;
+            return true;
+        }
+        temp = temp->next;
+    }
+
+    cout << "";
+
+    temp = NULL;
+    delete temp;
+    return false;
+}
+
+int Hash::size(){
+    return numOfStrings;
+}
+
+void Hash::test(){
+
+}
+
+/* ---------------------------     Helper Functions     --------------------------- */
+
+// Generates a newKey and inserts the string into the list
+void Hash::insert(string s){
+    // Sentinels
+    int ASCIInum{0};
+
+    // Variable for the new item's key.
+    unsigned int newKey{0};
+
+    string lower_s;
+    lower_s.assign(s);
+
+
+    // Converts the string in question into all lower case so that ASCII keys are accurate.
+    transform(lower_s.begin(), lower_s.end(), lower_s.begin(), ::tolower);
+
+    // converts srting s into ASCII integers so the hash function can do it's job.
+    for (char letter : lower_s){ 
+        ASCIInum = int(letter);
         newKey = newKey + ASCIInum;
     }
     
-    // I could've just used <inserted>, i used two for clarity.
-    while (inserted == false && notInserted == false){
-        // Hash fuunction
-        int index = newKey % modNum;
+    // Hash fuunction
+    int index = newKey % modNum;
 
-        // Temporary pointer
-        //node_k *arrPos = table[index];
-        node_k *temp = table[index]->next;
+    // Temporary pointer
+    node_k *temp = table[index];
 
-        cout << 5 << endl;
-        /* Traverses to the end of the linked list. If there is a matching key, that means the item already
-           exists. */
-        while (temp->next != NULL){
-            temp = temp;
-            cout << 6 << endl;
-            if (temp->key == newKey){
-                notInserted = true;
-            }
+    /* Traverses to the end of the linked list. If there is a matching key, that means the item already
+        exists. */
+    
+    while (temp != NULL){
+        if (temp->key == newKey){
+            cout << "duplicate item" << endl;
+            temp = NULL;
+            delete temp;
+            return;
         }
-
-        // Case: there is a linked list at the index.
-        if (temp->key != -1){
-            // Creates a new node_k and attaches it to the list, then sets temp to the new node
-            temp->next = new node_k;
-            temp = temp->next;
-            
-            /* Puts the new item's key and data into the new node, and makes sure the <next> pointer 
-               is set to NULL */
-            temp->key = newKey;
-            temp->data = s;
-            temp->next = NULL;
-            inserted = true;
-        }
-        // Case: the array index has no linked list yet.
-        else if (temp->key == -1){
-            temp->key = newKey;
-            temp->data = s;
-            temp->next = NULL;
-            inserted = true;
-        }
-        // Case: item already exists in the array.
-        else if (temp->key == newKey){
-            notInserted = true;
-            cout << "Item already exists" << endl;
-        }
-
-        delete temp;
+        temp = temp->next;
     }
+
+    
+    if (temp == NULL){
+        temp = new node_k;
+
+        temp->key = newKey;
+        temp->data.assign(lower_s);
+        temp->next = NULL;    
+    }
+    cout << "temp->key: " << temp->key << " newKey: " << newKey << " " << endl;
+    temp = NULL;
+    delete temp;
+    
 }
