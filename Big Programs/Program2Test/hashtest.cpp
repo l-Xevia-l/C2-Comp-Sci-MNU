@@ -53,9 +53,10 @@ bool Hash::contains(string s){
 
     /* Traverses to the end of the linked list. If there is a matching key, that means the item 
     exists. */
+
     while (temp != NULL){
         cout << "temp is not NULL" << endl;
-        if (temp->key == newKey){
+        if (temp->data == lower_s){
             cout << "temp->key == newKey" << endl;
             temp = NULL;
             delete temp;
@@ -64,10 +65,8 @@ bool Hash::contains(string s){
         temp = temp->next;
     }
 
-    cout << "";
-
-    temp = NULL;
-    delete temp;
+    //temp = NULL;
+    //delete temp;
     return false;
 }
 
@@ -99,7 +98,7 @@ void Hash::insert(string s){
     // converts srting s into ASCII integers so the hash function can do it's job.
     for (char letter : lower_s){ 
         ASCIInum = int(letter);
-        newKey = newKey + ASCIInum;
+        newKey += ASCIInum;
     }
     
     // Hash fuunction
@@ -107,15 +106,17 @@ void Hash::insert(string s){
 
     // Temporary pointer
     node_k *temp = table[index];
+    
 
     /* Traverses to the end of the linked list. If there is a matching key, that means the item already
         exists. */
     
     while (temp != NULL){
-        if (temp->key == newKey){
+        cout << "hello" << endl;
+        if (temp->data == lower_s){
             cout << "duplicate item" << endl;
             temp = NULL;
-            delete temp;
+            //delete temp;
             return;
         }
         temp = temp->next;
@@ -130,7 +131,9 @@ void Hash::insert(string s){
         temp->next = NULL;    
     }
     cout << "temp->key: " << temp->key << " newKey: " << newKey << " " << endl;
-    temp = NULL;
-    delete temp;
+    cout << "temp->data: " << temp->data << endl;
+
+    //temp = NULL;
+    //delete temp;
     
 }

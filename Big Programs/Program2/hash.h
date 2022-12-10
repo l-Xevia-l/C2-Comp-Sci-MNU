@@ -2,16 +2,10 @@
 
 using namespace std;
 
-struct node_k {
-    string data;
-    int key = -1;
-    node_k * next = NULL;  
-}; 
-
 class Hash {
 public: 
     // Constructor
-    Hash(int);
+    Hash(long int);
 
     // Function to add the string s to the table, if it's not already there.
     void add(string);
@@ -29,9 +23,11 @@ private:
     // Hash function to compute the hash code of a string.
     void insert(string);
 
-    int modNum{};
-    int numOfStrings{};
+    long int modNum{150'000};
+    long int numOfStrings{0};
 
     // the <150'000> is the size of the table.
-    node_k * table[150'000];
+    string table[150'000]{""};
+    // This allows the contains function to find items, even if items above it have been deleted.
+    bool inTable[150'000]{false};
 };

@@ -9,8 +9,9 @@
 
 using namespace std;
 
+string table[500'000]{""};
 
-Hash::Hash(int numForMod) {
+Hash::Hash(long int numForMod) {
     modNum = numForMod;
 }
 
@@ -20,13 +21,92 @@ void Hash::add(string s){
 }
 
 void Hash::remove(string s){
-    // code goes here
+    if(contains(s)){
+        // Variable for the new item's key.
+        unsigned long int newKey{0};
+        unsigned long int ASCIInum{0};
+
+        string lower_s = s;
+
+        // Converts the string in question into all lower case so that ASCII keys are accurate.
+        transform(lower_s.begin(), lower_s.end(), lower_s.begin(), ::tolower);
+
+        for (char letter : lower_s){ 
+        ASCIInum = int(letter);
+        newKey += ASCIInum;
+        }
+        newKey = newKey * newKey;
+
+        // Hash function
+        long int index = newKey % modNum;
+
+        // Makes sure that the index is always in the range of table
+        if (index > 149'999) {
+            index = 0;
+        }
+
+        //Finds and removes the item
+        while (true){
+            if(table[index] == lower_s){
+                table[index] = "";
+                return;
+            }
+            newKey += 3;
+            index = newKey % modNum;
+
+            // Makes sure that the index is always in the range of table
+            if (index > 149'999) {
+                index = 0;
+            }
+        }
+    }
 }
 
 bool Hash::contains(string s){
-    bool found;
-    // code goes here
-    return found;
+    bool found{false};
+
+    // Variable for the new item's key.
+    unsigned long int newKey{0};
+    unsigned long int ASCIInum{0};
+
+    string lower_s = s;
+
+    // Converts the string in question into all lower case so that ASCII keys are accurate.
+    transform(lower_s.begin(), lower_s.end(), lower_s.begin(), ::tolower);
+
+    for (char letter : lower_s){ 
+        ASCIInum = int(letter);
+        newKey += ASCIInum;
+    }
+    newKey = newKey * newKey;
+
+    // Hash function
+    long int index = newKey % modNum;
+
+    // Makes sure that the index is always in the range of table
+    if (index > 149'999) {
+        index = 0;
+    }
+
+    // Finds the item
+    while (true){
+        if(table[index] == lower_s){
+            return true;
+        }
+        if(table[index] == "" && inTable[index] == false){
+            return false;
+        }
+        // Rehash
+        newKey += 3;
+        index = newKey % modNum;
+
+
+        // Makes sure that the index is always in the range of table
+        if (index > 149'999) {
+            index = 0;
+        }
+    }
+    return false;
 }
 
 int Hash::size(){
@@ -44,72 +124,44 @@ void Hash::insert(string s){
     bool notInserted{false};
 
     // Variable for the new item's key.
-    unsigned int newKey;
+    unsigned long int newKey{0};
+    unsigned long int ASCIInum{0};
 
     string lower_s = s;
 
     // Converts the string in question into all lower case so that ASCII keys are accurate.
     transform(lower_s.begin(), lower_s.end(), lower_s.begin(), ::tolower);
 
-    // converts srting s into ASCII integers so the hash function can do it's job.
     for (char letter : lower_s){ 
-        int ASCIInum = int(letter);
-        newKey = newKey + ASCIInum;
+        ASCIInum = int(letter);
+        newKey += ASCIInum;
     }
-    
-    // I could've just used <inserted>, i used two for clarity.
+    newKey = newKey * newKey;
+
+    // Hash function
+    long int index = newKey % modNum;
+
+    // Makes sure that the index is always in the range of table
+    if (index > 149'999) {
+        index = 0;
+    }
+
+    // finds and inserts the item
     while (inserted == false && notInserted == false){
-        // Hash fuunction
-        int index = newKey % modNum;
-
-        // Temporary pointer
-        //node_k *arrPos = table[index];
-
-        cout << "key " << newKey << endl;
-
-        cout << "index " << index << endl;
-
-        node_k *temp = table[index];
-
-        //cout << temp->key << endl; 
-
-        cout << 5 << endl;
-        /* Traverses to the end of the linked list. If there is a matching key, that means the item already
-           exists. */
-        while (temp->next != NULL){
-            temp = temp;
-            cout << 6 << endl;
-            if (temp->key == newKey){
-                notInserted = true;
-            }
-        }
-
-        // Case: there is a linked list at the index.
-        if (temp->key != -1){
-            // Creates a new node_k and attaches it to the list, then sets temp to the new node
-            temp->next = new node_k;
-            temp = temp->next;
-            
-            /* Puts the new item's key and data into the new node, and makes sure the <next> pointer 
-               is set to NULL */
-            temp->key = newKey;
-            temp->data = s;
-            temp->next = NULL;
+        if (table[index] == "") {
+            table[index].assign(lower_s);
+            inTable[index] = true;
             inserted = true;
         }
-        // Case: the array index has no linked list yet.
-        else if (temp->key == -1){
-            temp->key = newKey;
-            temp->data = s;
-            temp->next = NULL;
-            inserted = true;
-        }
-        // Case: item already exists in the array.
-        else if (temp->key == newKey){
-            notInserted = true;
-            cout << "Item already exists" << endl;
-        }
 
-        delete temp;
+        newKey += 3;
+        index = newKey % modNum;
+        
+        cout << index << endl;
+
+        // Makes sure that the index is always in the range of table
+        if (index > 149'999) {
+            index = 0;
+        }
     }
 }

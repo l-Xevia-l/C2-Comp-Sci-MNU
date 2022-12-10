@@ -3,9 +3,8 @@
 using namespace std;
 
 struct node_k {
-    string data;
-    int key = -1;
-    node_k * next = NULL;  
+    string data; 
+    int key = -1; 
 };
 
 class Hash {
@@ -35,5 +34,5 @@ private:
     int numOfStrings{0};
 
     // the <150'000> is the size of the table.
-    node_k * table[150'000];
+    node_k table[150'000];
 };
