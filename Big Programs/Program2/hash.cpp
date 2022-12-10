@@ -9,7 +9,9 @@
 
 using namespace std;
 
-string table[500'000]{""};
+string table[200'000]{""};
+
+long int sizeOfTable = 199'999;
 
 Hash::Hash(long int numForMod) {
     modNum = numForMod;
@@ -32,8 +34,8 @@ void Hash::remove(string s){
         transform(lower_s.begin(), lower_s.end(), lower_s.begin(), ::tolower);
 
         for (char letter : lower_s){ 
-        ASCIInum = int(letter);
-        newKey += ASCIInum;
+            ASCIInum = int(letter);
+            newKey += ASCIInum;
         }
         newKey = newKey * newKey;
 
@@ -41,7 +43,7 @@ void Hash::remove(string s){
         long int index = newKey % modNum;
 
         // Makes sure that the index is always in the range of table
-        if (index > 149'999) {
+        if (index > sizeOfTable) {
             index = 0;
         }
 
@@ -55,7 +57,7 @@ void Hash::remove(string s){
             index = newKey % modNum;
 
             // Makes sure that the index is always in the range of table
-            if (index > 149'999) {
+            if (index > sizeOfTable) {
                 index = 0;
             }
         }
@@ -68,8 +70,10 @@ bool Hash::contains(string s){
     // Variable for the new item's key.
     unsigned long int newKey{0};
     unsigned long int ASCIInum{0};
+    unsigned long int index{0};
 
-    string lower_s = s;
+    string lower_s;
+    lower_s.assign(s);
 
     // Converts the string in question into all lower case so that ASCII keys are accurate.
     transform(lower_s.begin(), lower_s.end(), lower_s.begin(), ::tolower);
@@ -81,10 +85,10 @@ bool Hash::contains(string s){
     newKey = newKey * newKey;
 
     // Hash function
-    long int index = newKey % modNum;
+    index = newKey % modNum;
 
     // Makes sure that the index is always in the range of table
-    if (index > 149'999) {
+    if (index > sizeOfTable) {
         index = 0;
     }
 
@@ -102,7 +106,7 @@ bool Hash::contains(string s){
 
 
         // Makes sure that the index is always in the range of table
-        if (index > 149'999) {
+        if (index > sizeOfTable) {
             index = 0;
         }
     }
@@ -126,8 +130,10 @@ void Hash::insert(string s){
     // Variable for the new item's key.
     unsigned long int newKey{0};
     unsigned long int ASCIInum{0};
+    unsigned long int index{0};
 
-    string lower_s = s;
+    string lower_s;
+    lower_s.assign(s);
 
     // Converts the string in question into all lower case so that ASCII keys are accurate.
     transform(lower_s.begin(), lower_s.end(), lower_s.begin(), ::tolower);
@@ -138,11 +144,12 @@ void Hash::insert(string s){
     }
     newKey = newKey * newKey;
 
+    //cout << "newKey in insert: " << newKey << endl;
     // Hash function
-    long int index = newKey % modNum;
+    index = newKey % modNum;
 
     // Makes sure that the index is always in the range of table
-    if (index > 149'999) {
+    if (index > sizeOfTable) {
         index = 0;
     }
 
@@ -157,10 +164,10 @@ void Hash::insert(string s){
         newKey += 3;
         index = newKey % modNum;
         
-        cout << index << endl;
+        //cout << index << endl;
 
         // Makes sure that the index is always in the range of table
-        if (index > 149'999) {
+        if (index > sizeOfTable) {
             index = 0;
         }
     }

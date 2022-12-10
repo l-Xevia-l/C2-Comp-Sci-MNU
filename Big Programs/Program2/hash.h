@@ -23,11 +23,12 @@ private:
     // Hash function to compute the hash code of a string.
     void insert(string);
 
-    long int modNum{150'000};
+    long int modNum{200'000};
     long int numOfStrings{0};
 
-    // the <150'000> is the size of the table.
-    string table[150'000]{""};
+    // the <200'000> is the size of the table.
+    string table[200'000]{""};
+    
     // This allows the contains function to find items, even if items above it have been deleted.
-    bool inTable[150'000]{false};
+    bool inTable[200'000]{false};
 };
